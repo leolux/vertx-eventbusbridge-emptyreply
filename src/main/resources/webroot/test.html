@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>SockJS Client Test</title>
+<script src="//cdn.jsdelivr.net/sockjs/1.0.3/sockjs.min.js"></script>
+<script src="//rawgit.com/vert-x3/vertx-bus-bower/master/vertxbus.js"></script>
+<meta charset="UTF-8">
+</head>
+<body>
+	<div>Sends one message to the eventbus</div>
+	<div>The replyHandler never gets called for an empty string reply</div>
+	<script>
+		console.log('init eventbus');
+		var eb = new vertx.EventBus("http://localhost:8888/eventbus");
+		eb.onopen = function() {
+			eb.send('inbound.address', '{"blablub"}', function(reply) {
+				alert('ReplyHandler invoked');
+			}, function() {
+				alert('FailureHandler invoked');
+			});
+			console.log('msg has been sent to the server');
+
+			//             	eb.registerHandler('outbound.address', function(msg){
+			//             		console.log('msg from server ',msg)
+			//             	});
+
+		}
+	</script>
+</body>
+</html>
